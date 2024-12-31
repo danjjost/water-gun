@@ -37,6 +37,5 @@ class WaterGun:
             time.sleep(0.1)  # short delay so we don't hog CPU
             with self.cutoff_lock:
                 if time.time() > self.next_cutoff_time:
-                    print("Turning off water gun.")
                     GPIO.output(self.pin, GPIO.LOW)
 
