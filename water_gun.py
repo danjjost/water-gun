@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+import time
+import threading
+import RPi.GPIO as GPIO
+
 DEFAULT_PIN = 17
 DEFAULT_HOLD_TIME = 0.5  # seconds
 SERVER_PORT = 8080

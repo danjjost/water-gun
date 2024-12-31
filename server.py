@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import time
-import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import RPi.GPIO as GPIO
 
