@@ -4,7 +4,7 @@ import threading
 import RPi.GPIO as GPIO
 
 DEFAULT_PIN = 17
-HOLD_TIME = 0.5  # seconds
+HOLD_TIME = 1  # seconds
 
 class WaterGun:
     def __init__(self, pin=DEFAULT_PIN, default_hold_time=HOLD_TIME):
