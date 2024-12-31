@@ -4,11 +4,10 @@ import threading
 import RPi.GPIO as GPIO
 
 DEFAULT_PIN = 17
-DEFAULT_HOLD_TIME = 0.5  # seconds
-SERVER_PORT = 8080
+HOLD_TIME = 0.5  # seconds
 
 class WaterGun:
-    def __init__(self, pin=DEFAULT_PIN, default_hold_time=DEFAULT_HOLD_TIME):
+    def __init__(self, pin=DEFAULT_PIN, default_hold_time=HOLD_TIME):
         self.pin = pin
         self.default_hold_time = default_hold_time
 
@@ -26,28 +25,18 @@ class WaterGun:
         self.monitor_thread = threading.Thread(target=self._pin_monitor, daemon=True)
         self.monitor_thread.start()
 
-    def fire(self, hold_time=None):
-        """
-        Drive the GPIO pin HIGH. Reset the countdown so that
-        the pin will go LOW after hold_time seconds from now.
-        """
-        print(f"Firing water gun for {hold_time or self.default_hold_time} seconds...")
-        if hold_time is None:
-            hold_time = self.default_hold_time
+    def fire(self):
+        print(f"Firing water gun for {HOLD_TIME} seconds...")
         
         with self.cutoff_lock:
             GPIO.output(self.pin, GPIO.HIGH)
-            self.next_cutoff_time = time.time() + hold_time
+            self.next_cutoff_time = time.time() + HOLD_TIME
 
     def _pin_monitor(self):
-        """
-        Background thread function. Loops and checks if the
-        current time has passed 'next_cutoff_time'; if so,
-        it sets the GPIO pin LOW.
-        """
         while True:
-            time.sleep(0.05)  # short delay so we don't hog CPU
+            time.sleep(0.1)  # short delay so we don't hog CPU
             with self.cutoff_lock:
                 if time.time() > self.next_cutoff_time:
+                    print("Turning off water gun.")
                     GPIO.output(self.pin, GPIO.LOW)
 

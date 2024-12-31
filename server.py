@@ -12,25 +12,13 @@ SERVER_PORT = 3020
 water_gun = WaterGun()
 
 class SimpleRequestHandler(BaseHTTPRequestHandler):
-    """
-    Only handles POST requests to 'fire' the water gun.
-    You can supply a custom hold_time in the POST body
-    like "hold_time=1.5".
-    """
     def do_POST(self):
         # Read the POST body and parse any 'hold_time'
         content_length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(content_length).decode('utf-8').strip()
 
-        hold_time = None
-        if body.startswith("hold_time="):
-            try:
-                hold_time = float(body.split("=", 1)[1])
-            except ValueError:
-                pass  # fallback to default if invalid
-
         # Call water_gun.fire()
-        water_gun.fire(hold_time)
+        water_gun.fire()
 
         # Send back a simple response
         self.send_response(200)
